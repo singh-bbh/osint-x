@@ -1,0 +1,4 @@
+/workspaces/osint-x/osint-x/build/CMakeFiles/osint-x.dir
+/workspaces/osint-x/osint-x/build/CMakeFiles/osint-web.dir
+/workspaces/osint-x/osint-x/build/CMakeFiles/edit_cache.dir
+/workspaces/osint-x/osint-x/build/CMakeFiles/rebuild_cache.dir

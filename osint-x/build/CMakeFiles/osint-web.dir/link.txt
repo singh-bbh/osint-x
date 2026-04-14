@@ -1,0 +1,1 @@
+/usr/bin/c++ "CMakeFiles/osint-web.dir/src/web/WebServer.cpp.o" -o osint-web  /usr/lib/x86_64-linux-gnu/libcurl.so -lpthread 

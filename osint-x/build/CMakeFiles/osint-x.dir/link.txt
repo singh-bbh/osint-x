@@ -1,0 +1,1 @@
+/usr/bin/c++ "CMakeFiles/osint-x.dir/src/main.cpp.o" -o osint-x  /usr/lib/x86_64-linux-gnu/libcurl.so -lpthread 

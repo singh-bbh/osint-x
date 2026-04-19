@@ -10,6 +10,7 @@ sudo apt-get install -y libcurl4-openssl-dev cmake build-essential libboost-all-
 git clone https://github.com/CrowCpp/Crow.git include/crow
 
 4. Build : 
+If there is already a build folder in osint-x/osint-x run the command : rm -rf build |
 mkdir build && cd build |
 cmake .. |
 make -j4 

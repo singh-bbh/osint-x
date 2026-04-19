@@ -973,7 +973,9 @@ CMakeFiles/osint-web.dir/src/web/WebServer.cpp.o
  /workspaces/osint-x/include/crow/include/crow/utility.h
  /workspaces/osint-x/include/crow/include/crow/version.h
  /workspaces/osint-x/include/crow/include/crow/websocket.h
+ /workspaces/osint-x/osint-x/include/config.hpp
  /workspaces/osint-x/osint-x/src/utils/HTTPClient.hpp
+ /workspaces/osint-x/osint-x/src/utils/KeyRotator.hpp
  /workspaces/osint-x/osint-x/src/utils/SimpleJSON.hpp
  /workspaces/osint-x/osint-x/src/core/EmailLookup.hpp
  /workspaces/osint-x/osint-x/src/core/IPLookup.hpp

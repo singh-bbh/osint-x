@@ -1,4 +1,4 @@
-## Setup for teammates
+## Setup for Users
 
 1. Clone the repo
 git clone https://github.com/YOUR_USERNAME/osint-x

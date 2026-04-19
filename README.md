@@ -9,10 +9,10 @@ sudo apt-get install -y libcurl4-openssl-dev cmake build-essential libboost-all-
 3. Install Crow
 git clone https://github.com/CrowCpp/Crow.git include/crow
 
-4. Build
-mkdir build && cd build
-cmake ..
-make -j4
+4. Build : 
+mkdir build && cd build |
+cmake .. |
+make -j4 
 
 5. Run CLI
 ./osint-x ip 8.8.8.8

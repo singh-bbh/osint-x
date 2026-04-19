@@ -1,7 +1,7 @@
 ## Setup for Users
 
 1. Clone the repo
-git clone https://github.com/YOUR_USERNAME/osint-x
+git clone https://github.com/singh-bbh/osint-x
 
 2. Install dependencies
 sudo apt-get install -y libcurl4-openssl-dev cmake build-essential libboost-all-dev libasio-dev

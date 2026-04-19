@@ -5,6 +5,21 @@
 // Lightweight JSON field extractor — no external dependency
 class SimpleJSON {
 public:
+
+    // Escape special characters before putting values into JSON strings
+    static std::string escape(const std::string& s) {
+        std::string out;
+        for (char c : s) {
+            if      (c == '"')  out += "\\\"";
+            else if (c == '\\') out += "\\\\";
+            else if (c == '\n') out += "\\n";
+            else if (c == '\r') out += "\\r";
+            else if (c == '\t') out += "\\t";
+            else out += c;
+        }
+        return out;
+    }
+
     static std::string getString(const std::string& json, const std::string& key) {
         std::string search = "\"" + key + "\"";
         size_t pos = json.find(search);

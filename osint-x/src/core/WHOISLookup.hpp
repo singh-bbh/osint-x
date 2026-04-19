@@ -2,12 +2,15 @@
 #include "OSINTModule.hpp"
 #include "../utils/HTTPClient.hpp"
 #include "../utils/SimpleJSON.hpp"
+#include "../utils/KeyRotator.hpp"
+#include "../../include/config.hpp"
 #include <regex>
 #include <vector>
 
 class WHOISLookup : public OSINTModule {
 private:
     HTTPClient http;
+    KeyRotator keyPool;
 
     bool isValidDomain(const std::string& d) const {
         std::regex domainRe(R"(^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$)");
@@ -95,8 +98,8 @@ private:
 
 public:
     // Pass whoisfreaks API key
-    WHOISLookup(const std::string& whoisKey = "")
-        : OSINTModule("WHOISLookup", whoisKey) {}
+    WHOISLookup() : OSINTModule("WHOISLookup", ""),
+                    keyPool(APIConfig::whoisfreaksKeys()) {}
 
     bool validate(const std::string& query) const override {
         return isValidDomain(query);
@@ -119,24 +122,30 @@ public:
 
         result.addField("Domain", query);
 
-        // ── WHOIS via WhoisFreaks ──
-        if (!apiKey.empty()) {
+        // WHOIS via WhoisFreaks with key rotation
+        if (!keyPool.empty()) {
             log("Querying WhoisFreaks for " + query);
-            std::string url = "https://api.whoisfreaks.com/v1.0/whois?whois=live&domainName=" +
-                               query + "&apiKey=" + apiKey;
+            std::string key  = keyPool.next();
+            std::string url  = "https://api.whoisfreaks.com/v1.0/whois?whois=live&domainName=" +
+                                query + "&apiKey=" + key;
             std::string resp = http.get(url);
 
-            if (resp.empty()) {
-                result.addField("WHOIS", "Network error");
-            } else if (resp.find("error") != std::string::npos &&
-                       resp.find("registrar") == std::string::npos) {
-                result.addField("WHOIS", "Domain not found or API error");
-            } else {
-                parseWhoisFreaks(resp, result);
-                result.addField("WHOIS Source", "WhoisFreaks API");
+            // Rotate if rate limited
+            if (resp.empty() || resp.find("\"error\"") != std::string::npos) {
+                key  = keyPool.next();
+                url  = "https://api.whoisfreaks.com/v1.0/whois?whois=live&domainName=" +
+                        query + "&apiKey=" + key;
+                resp = http.get(url);
             }
+
+            if (!resp.empty() && resp.find("registrar") != std::string::npos)
+                parseWhoisFreaks(resp, result);
+            else
+                result.addField("WHOIS", "Unavailable — check WhoisFreaks keys");
+
+            result.addField("WHOIS Source", "WhoisFreaks API");
         } else {
-            result.addField("WHOIS", "Add WhoisFreaks API key for registration info");
+            result.addField("WHOIS", "No WhoisFreaks keys in config.hpp");
         }
 
         // ── DNS Records via Google DNS (confirmed working) ──

@@ -10,12 +10,15 @@ CMakeFiles/osint-x.dir/src/main.cpp.o
  /usr/include/asm-generic/posix_types.h
  /usr/include/asm-generic/socket.h
  /usr/include/asm-generic/sockios.h
+ /usr/include/c++/13/atomic
  /usr/include/c++/13/backward/binders.h
  /usr/include/c++/13/bit
  /usr/include/c++/13/bits/algorithmfwd.h
  /usr/include/c++/13/bits/alloc_traits.h
  /usr/include/c++/13/bits/allocated_ptr.h
  /usr/include/c++/13/bits/allocator.h
+ /usr/include/c++/13/bits/atomic_base.h
+ /usr/include/c++/13/bits/atomic_lockfree_defines.h
  /usr/include/c++/13/bits/basic_ios.h
  /usr/include/c++/13/bits/basic_ios.tcc
  /usr/include/c++/13/bits/basic_string.h

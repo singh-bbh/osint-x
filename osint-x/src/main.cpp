@@ -11,9 +11,9 @@
 void printBanner() {
     std::cout << R"(
   ╔═══════════════════════════════════════╗
-  ║          osint-x  v1.0               ║
-  ║   Open Source Intelligence Toolkit   ║
-  ║   Academic Project — SRM KTR         ║
+  ║          osint-x  v1.0                ║
+  ║   Open Source Intelligence Toolkit    ║
+  ║                   By Team Crawlers~   ║
   ╚═══════════════════════════════════════╝
 )" << "\n";
 }
@@ -36,10 +36,10 @@ int main(int argc, char* argv[]) {
     // All accessed through the OSINTModule* base pointer
     std::map<std::string, OSINTModule*> modules;
     IPLookup       ipMod;
-    PhoneLookup    phoneMod("d8142dfbaebbdfb1310283e4abcd332e");   // paste NumVerify key here
-    EmailLookup    emailMod("629f58f594mshbcc57d1906dd330p1ab9dajsn78ca0cc8e740","a2f5f105-b35d-45a0-9faf-b47235f4d190");   // paste HIBP key here
+    PhoneLookup    phoneMod;   
+    EmailLookup    emailMod;   // paste HIBP key here
     UsernameLookup userMod;
-    WHOISLookup    whoisMod("95720f3168c3427f8a171dfdda8e33bc");
+    WHOISLookup    whoisMod;
 
     modules["ip"]       = &ipMod;
     modules["phone"]    = &phoneMod;

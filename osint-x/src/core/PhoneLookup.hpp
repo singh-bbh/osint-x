@@ -2,11 +2,14 @@
 #include "OSINTModule.hpp"
 #include "../utils/HTTPClient.hpp"
 #include "../utils/SimpleJSON.hpp"
+#include "../utils/KeyRotator.hpp"
+#include "../include/config.hpp"
 #include <regex>
 
 class PhoneLookup : public OSINTModule {
 private:
     HTTPClient http;
+    KeyRotator keyPool;
 
     std::string cleanNumber(const std::string& raw) const {
         std::string clean;
@@ -16,8 +19,8 @@ private:
     }
 
 public:
-    PhoneLookup(const std::string& numVerifyKey = "")
-        : OSINTModule("PhoneLookup", numVerifyKey) {}
+    PhoneLookup() : OSINTModule("PhoneLookup", ""),
+                keyPool(APIConfig::numverifyKeys()) {}
 
     bool validate(const std::string& query) const override {
         std::string clean;
@@ -41,22 +44,29 @@ public:
             return result;
         }
 
-        if (apiKey.empty()) {
+        if (keyPool.empty()) {
             result.success = false;
-            result.error   = "No NumVerify API key set — add it in main.cpp and WebServer.cpp";
+            result.error   = "No NumVerify keys — add them in include/config.hpp";
             return result;
         }
 
         std::string clean = cleanNumber(query);
         log("Querying NumVerify for " + clean);
 
-        // NumVerify API call
-        std::string url = "http://apilayer.net/api/validate?access_key=" +
-                           apiKey +
-                           "&number=" + http.urlEncode(clean) +
-                           "&format=1";
-
+        // Use key from pool
+        std::string key  = keyPool.next();
+        std::string url  = "http://apilayer.net/api/validate?access_key=" +
+                            key + "&number=" + http.urlEncode(clean) + "&format=1";
         std::string resp = http.get(url);
+
+        // Auto rotate if rate limited or error
+        if (resp.empty() || resp.find("\"success\":false") != std::string::npos) {
+            log("Key rate limited — rotating to next key");
+            key  = keyPool.next();
+            url  = "http://apilayer.net/api/validate?access_key=" +
+                    key + "&number=" + http.urlEncode(clean) + "&format=1";
+            resp = http.get(url);
+        }
 
         if (resp.empty()) {
             result.success = false;

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OSINT-X</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="noise"></div>
+
+  <header>
+    <div class="logo">OSINT<span>-X</span></div>
+    <div class="tagline">Open Source Intelligence Toolkit </div>
+  </header>
+
+  <main>
+    <div class="center-box" id="startBox">
+      <div class="glitch-text" data-text="OSINT-X">OSINT-X</div>
+      <button class="start-btn" id="startBtn">
+        <span class="btn-bracket">[</span>
+        Hello, What do you want to check today?
+        <span class="btn-bracket">]</span>
+      </button>
+    </div>
+
+    <div class="modules-grid hidden" id="modulesGrid">
+      <div class="module-card" data-module="email">
+        <div class="module-icon">@</div>
+        <div class="module-name">EMAIL</div>
+        <div class="module-desc">Breach detection & validation</div>
+      </div>
+      <div class="module-card" data-module="ip">
+        <div class="module-icon">#</div>
+        <div class="module-name">IP ADDRESS</div>
+        <div class="module-desc">Geolocation & ISP lookup</div>
+      </div>
+      <div class="module-card" data-module="phone">
+        <div class="module-icon">+</div>
+        <div class="module-name">PHONE NUMBER</div>
+        <div class="module-desc">Carrier & location intel</div>
+      </div>
+      <div class="module-card" data-module="whois">
+        <div class="module-icon">$</div>
+        <div class="module-name">DOMAIN CHECK</div>
+        <div class="module-desc">WHOIS & DNS records</div>
+      </div>
+      <div class="module-card" data-module="username">
+        <div class="module-icon">~</div>
+        <div class="module-name">USERNAME CHECK</div>
+        <div class="module-desc">Cross-platform presence</div>
+      </div>
+    </div>
+
+    <!-- Input panel -->
+    <div class="input-panel hidden" id="inputPanel">
+      <div class="input-header">
+        <span id="inputLabel">// ENTER TARGET</span>
+        <button class="back-btn" id="backBtn">[BACK]</button>
+      </div>
+      <div class="input-row">
+        <span class="prompt">&gt;</span>
+        <input type="text" id="queryInput" placeholder="enter query..." autocomplete="off" />
+        <button class="run-btn" id="runBtn">[EXECUTE]</button>
+      </div>
+    </div>
+
+    <!-- Results panel -->
+    <div class="results-panel hidden" id="resultsPanel">
+      <div class="results-header">
+        <span id="resultsTitle">// RESULTS</span>
+        <div class="results-actions">
+          <button class="back-btn" id="resultsBackBtn">[NEW QUERY]</button>
+        </div>
+      </div>
+      <div class="results-body" id="resultsBody">
+        <div class="loading" id="loadingIndicator">
+          <span class="blink">▋</span> SCANNING TARGET...
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>OSINT-X v1.0</span>
+    <span>//</span>
+    <span id="clock"></span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

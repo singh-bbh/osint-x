@@ -46,21 +46,21 @@ int main() {
 
     // ── Serve frontend
     CROW_ROUTE(app, "/")([](){
-        std::string html = readFile("frontend/index.html");
+        std::string html = readFile("../frontend/index.html");
         crow::response res(html);
         res.set_header("Content-Type", "text/html");
         return res;
     });
 
     CROW_ROUTE(app, "/style.css")([](){
-        std::string css = readFile("frontend/style.css");
+        std::string css = readFile("../frontend/style.css");
         crow::response res(css);
         res.set_header("Content-Type", "text/css");
         return res;
     });
 
     CROW_ROUTE(app, "/app.js")([](){
-        std::string js = readFile("frontend/app.js");
+        std::string js = readFile("../frontend/app.js");
         crow::response res(js);
         res.set_header("Content-Type", "application/javascript");
         return res;

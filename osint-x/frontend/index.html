@@ -5,89 +5,192 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>OSINT-X</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
   <div class="scanlines"></div>
-  <div class="noise"></div>
+  <canvas id="matrix" class="matrix-bg"></canvas>
 
-  <header>
-    <div class="logo">OSINT<span>-X</span></div>
-    <div class="tagline">Open Source Intelligence Toolkit </div>
-  </header>
-
-  <main>
-    <div class="center-box" id="startBox">
-      <div class="glitch-text" data-text="OSINT-X">OSINT-X</div>
-      <button class="start-btn" id="startBtn">
-        <span class="btn-bracket">[</span>
-        Hello, What do you want to check today?
-        <span class="btn-bracket">]</span>
-      </button>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-bracket">[</span>OSINT<span class="logo-accent">-X</span><span class="logo-bracket">]</span>
     </div>
+    <div class="sidebar-ver">v1.0 // SRM KTR</div>
 
-    <div class="modules-grid hidden" id="modulesGrid">
-      <div class="module-card" data-module="email">
-        <div class="module-icon">@</div>
-        <div class="module-name">EMAIL</div>
-        <div class="module-desc">Breach detection & validation</div>
-      </div>
-      <div class="module-card" data-module="ip">
-        <div class="module-icon">#</div>
-        <div class="module-name">IP ADDRESS</div>
-        <div class="module-desc">Geolocation & ISP lookup</div>
-      </div>
-      <div class="module-card" data-module="phone">
-        <div class="module-icon">+</div>
-        <div class="module-name">PHONE NUMBER</div>
-        <div class="module-desc">Carrier & location intel</div>
-      </div>
-      <div class="module-card" data-module="whois">
-        <div class="module-icon">$</div>
-        <div class="module-name">DOMAIN CHECK</div>
-        <div class="module-desc">WHOIS & DNS records</div>
-      </div>
-      <div class="module-card" data-module="username">
-        <div class="module-icon">~</div>
-        <div class="module-name">USERNAME CHECK</div>
-        <div class="module-desc">Cross-platform presence</div>
-      </div>
-    </div>
+    <div class="sidebar-divider"></div>
 
-    <!-- Input panel -->
-    <div class="input-panel hidden" id="inputPanel">
-      <div class="input-header">
-        <span id="inputLabel">// ENTER TARGET</span>
-        <button class="back-btn" id="backBtn">[BACK]</button>
-      </div>
-      <div class="input-row">
-        <span class="prompt">&gt;</span>
-        <input type="text" id="queryInput" placeholder="enter query..." autocomplete="off" />
-        <button class="run-btn" id="runBtn">[EXECUTE]</button>
-      </div>
-    </div>
-
-    <!-- Results panel -->
-    <div class="results-panel hidden" id="resultsPanel">
-      <div class="results-header">
-        <span id="resultsTitle">// RESULTS</span>
-        <div class="results-actions">
-          <button class="back-btn" id="resultsBackBtn">[NEW QUERY]</button>
+    <div class="sidebar-label">// MODULES</div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <div class="nav-item" data-module="ip">
+        <span class="nav-icon">#</span>
+        <div class="nav-info">
+          <span class="nav-name">IP LOOKUP</span>
+          <span class="nav-desc">geolocation & ISP</span>
         </div>
       </div>
-      <div class="results-body" id="resultsBody">
-        <div class="loading" id="loadingIndicator">
-          <span class="blink">▋</span> SCANNING TARGET...
+      <div class="nav-item" data-module="phone">
+        <span class="nav-icon">+</span>
+        <div class="nav-info">
+          <span class="nav-name">PHONE INTEL</span>
+          <span class="nav-desc">carrier & region</span>
         </div>
       </div>
+      <div class="nav-item" data-module="email">
+        <span class="nav-icon">@</span>
+        <div class="nav-info">
+          <span class="nav-name">EMAIL CHECK</span>
+          <span class="nav-desc">breach detection</span>
+        </div>
+      </div>
+      <div class="nav-item" data-module="username">
+        <span class="nav-icon">~</span>
+        <div class="nav-info">
+          <span class="nav-name">USERNAME SCAN</span>
+          <span class="nav-desc">150+ platforms</span>
+        </div>
+      </div>
+      <div class="nav-item" data-module="whois">
+        <span class="nav-icon">$</span>
+        <div class="nav-info">
+          <span class="nav-name">WHOIS / DNS</span>
+          <span class="nav-desc">domain intel</span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-label">// STATUS</div>
+    <div class="status-list">
+      <div class="status-item">
+        <span class="status-dot green"></span>
+        <span>ip-api.com</span>
+      </div>
+      <div class="status-item">
+        <span class="status-dot green"></span>
+        <span>numverify</span>
+      </div>
+      <div class="status-item">
+        <span class="status-dot green"></span>
+        <span>leakcheck.io</span>
+      </div>
+      <div class="status-item">
+        <span class="status-dot green"></span>
+        <span>whoisfreaks</span>
+      </div>
+      <div class="status-item">
+        <span class="status-dot green"></span>
+        <span>google dns</span>
+      </div>
     </div>
-  </main>
 
-  <footer>
-    <span>OSINT-X v1.0</span>
-    <span>//</span>
-    <span id="clock"></span>
-  </footer>
+    <div class="sidebar-bottom">
+      <div class="clock-box">
+        <div id="clock" class="clock-time">00:00:00</div>
+        <div id="dateStr" class="clock-date">--/--/----</div>
+      </div>
+    </div>
+  </aside>
 
+  <!-- Main content -->
+  <div class="content-area">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-path" id="topbarPath">root@osint-x:~ $</div>
+      <div class="topbar-right">
+        <span class="sys-tag">SYSTEM ONLINE</span>
+        <span class="sys-dot"></span>
+      </div>
+    </div>
+
+    <!-- Workspace -->
+    <div class="workspace">
+
+      <!-- Welcome screen -->
+      <div id="welcomeScreen" class="welcome-screen">
+        <div class="welcome-ascii">
+          <pre class="ascii-art">
+  ██████╗ ███████╗██╗███╗   ██╗████████╗      ██╗  ██╗
+ ██╔═══██╗██╔════╝██║████╗  ██║╚══██╔══╝      ╚██╗██╔╝
+ ██║   ██║███████╗██║██╔██╗ ██║   ██║    █████╗╚███╔╝
+ ██║   ██║╚════██║██║██║╚██╗██║   ██║    ╚════╝██╔██╗
+ ╚██████╔╝███████║██║██║ ╚████║   ██║          ██╔╝╚██╗
+  ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝   ╚═╝          ╚═╝  ╚═╝
+          </pre>
+        </div>
+        <div class="welcome-tagline">// open source intelligence toolkit</div>
+        <div class="welcome-boot" id="welcomeBoot"></div>
+        <button class="start-btn hidden" id="startBtn">
+          <span class="blink">▋</span>&nbsp;
+          INITIALIZE — select a module from the sidebar
+          &nbsp;<span class="blink">▋</span>
+        </button>
+      </div>
+
+      <!-- Input area -->
+      <div id="inputArea" class="input-area hidden">
+        <div class="input-area-header">
+          <div class="input-module-badge" id="inputModuleBadge">IP LOOKUP</div>
+          <div class="input-area-desc" id="inputAreaDesc">Geolocation, ISP, ASN</div>
+        </div>
+        <div class="terminal-input-box">
+          <div class="terminal-line">
+            <span class="terminal-prompt">root@osint-x:~$</span>
+            <input type="text" id="queryInput"
+                   placeholder="enter target..."
+                   autocomplete="off" spellcheck="false"/>
+            <button class="exec-btn" id="runBtn">EXECUTE</button>
+          </div>
+          <div class="terminal-hint" id="terminalHint">tip: include country code for phone numbers</div>
+        </div>
+      </div>
+
+      <!-- Results area -->
+      <div id="resultsArea" class="results-area hidden">
+        <div class="results-area-header">
+          <div class="results-breadcrumb" id="resultsBreadcrumb">
+            root@osint-x:~$ osint-x ip 8.8.8.8
+          </div>
+          <button class="clear-btn" id="clearBtn">[CLEAR]</button>
+        </div>
+
+        <!-- Map -->
+        <div id="mapContainer" class="map-wrap hidden">
+          <div class="map-bar">
+            <span class="map-bar-title">// TARGET LOCATION</span>
+            <span id="mapCoords" class="map-coords"></span>
+          </div>
+          <div id="map"></div>
+        </div>
+
+        <!-- Output terminal -->
+        <div class="output-terminal">
+          <div class="output-bar">
+            <span>// SCAN OUTPUT</span>
+            <span id="outputMeta" class="output-meta"></span>
+          </div>
+          <div class="output-body" id="outputBody"></div>
+        </div>
+      </div>
+
+      <!-- Loader -->
+      <div id="loaderArea" class="loader-area hidden">
+        <div class="loader-box">
+          <div class="loader-spinner"></div>
+          <div class="loader-msg" id="loaderMsg">SCANNING TARGET...</div>
+          <div class="loader-progress-track">
+            <div class="loader-progress-fill" id="progressBar"></div>
+          </div>
+          <div class="loader-sub" id="loaderSub">initializing...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

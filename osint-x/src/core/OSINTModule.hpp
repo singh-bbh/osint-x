@@ -32,7 +32,7 @@ struct ReconResult {
 
         if (!error.empty())
             j << "\"error\":\"" << SimpleJSON::escape(error) << "\",";
-
+        j << "\"hasCoords\":" << (hasCoords ? "true" : "false") << ",";
         if (hasCoords) {
             j << "\"latitude\":"  << latitude  << ",";
             j << "\"longitude\":" << longitude << ",";
